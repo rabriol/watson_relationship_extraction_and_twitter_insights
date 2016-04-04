@@ -1,0 +1,11 @@
+applications:
+- path: target/WhoYouAreTalkingAbout.war
+  memory: 512M
+  instances: 1
+  domain: mybluemix.net
+  name: rafael-brito-watson-interview
+  host: rafael-brito-watson-interview
+  disk_quota: 1024M
+  services:
+  - relationship_extraction
+  - insights_for_twitter
