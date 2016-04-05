@@ -33,25 +33,30 @@ public class RelationShipExtractionService {
     @Autowired
     private WatsonClient client;
 
-    public List<String> extract(String text) {
-        try {
-            String uri = RELATIONSHIP_EXTRACTION_URI;
+    /**
+     * Makes the call to the relationship extraction service to discover all persons, that are mentioned in the tweets
+     *
+     * @param text the parameter to be submitted to the service where are extract the persons
+     * @return the list containing all persons that were discovered
+     */
+    public List<String> extract(String text) throws Exception {
+        String uri = RELATIONSHIP_EXTRACTION_URI;
 
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put(SID, IE_EN_NEWS);
-            parameters.put(RT, JSON);
-            parameters.put(TXT, text);
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(SID, IE_EN_NEWS);
+        parameters.put(RT, JSON);
+        parameters.put(TXT, text);
 
-            String json = client.invokeByPost(RELATIONSHIP_EXTRACTION_SERVICE, uri, parameters);
+        String json = client.invokeByPost(RELATIONSHIP_EXTRACTION_SERVICE, uri, parameters);
 
-            List<String> people = extractPeople(json);
+        List<String> people = extractPeople(json);
 
-            return people;
-        } catch (Exception e) {
-            throw new IllegalArgumentException();
-        }
+        return people;
     }
 
+    // starts reading the json from doc -> mentions -> mention.
+    // when it detects a node with the values {mtype=NAM,role=PERSON, score >= 0.5}
+    // it adds the person to the list
     private List<String> extractPeople(String json) throws ParseException {
         List<String> people = new ArrayList<>();
 

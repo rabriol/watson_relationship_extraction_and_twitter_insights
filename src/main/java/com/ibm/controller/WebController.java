@@ -31,9 +31,12 @@ public class WebController {
                        @RequestParam("startDate") String startDate,
                        @RequestParam("endDate") String endDate,
                        Model model) {
+        try {
+            Map<String, Long> result = mentionExtractor.find(nickName, startDate, endDate);
 
-        Map<String, Long> result = mentionExtractor.find(nickName, startDate, endDate);
-
-        return result.toString();
+            return result.toString();
+        } catch (Exception e) {
+            return "";
+        }
     }
 }

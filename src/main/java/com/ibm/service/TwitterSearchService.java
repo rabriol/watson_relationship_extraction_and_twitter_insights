@@ -32,21 +32,28 @@ public class TwitterSearchService {
      * @param startDate follows the pattern CCYY-MM-DD and is the initial date used on the query to retrieve the tweets
      * @param endDate follows the pattern CCYY-MM-DD and is the end date used on the query to retrieve the tweets
      * @return a list contaning all tweets found based on the query parameters
+     * @throws Exception when some error occurs
      */
-    public List<String> search(String nickName, String startDate, String endDate) {
-        try {
-            String uri = buildUri(nickName, startDate, endDate);
+    public List<String> search(String nickName, String startDate, String endDate) throws Exception {
+        String uri = buildUri(nickName, startDate, endDate);
 
-            String json = client.invokeByGet(TWITTERINSIGHTS_SERVICE, uri);
+        String json = client.invokeByGet(TWITTERINSIGHTS_SERVICE, uri);
 
-            List<String> result = extractTweets(json);
+        List<String> result = extractTweets(json);
 
-            return result;
-        } catch (Exception e) {
-            throw new IllegalArgumentException();
-        }
+        return result;
     }
 
+    public WatsonClient getClient() {
+        return client;
+    }
+
+    public void setClient(WatsonClient client) {
+        this.client = client;
+    }
+
+    // starts reading the json from tweets -> message -> body
+    // the body is where are in fact the tweets
     private List<String> extractTweets(String json) throws ParseException {
         List<String> messages = new ArrayList<>();
 
@@ -64,6 +71,7 @@ public class TwitterSearchService {
         return messages;
     }
 
+    // compose the the uri following the pattern "from:nickname AND posted:CCYY-MM-DD,CCYY-MM-DD"
     private String buildUri(String nickName, String startDate, String endDate) throws UnsupportedEncodingException {
         String parameter = new StringBuilder()
                 .append("from:")

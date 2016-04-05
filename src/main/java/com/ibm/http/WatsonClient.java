@@ -44,7 +44,7 @@ public class WatsonClient {
      * @return a json
      * @throws InfrastructureException thrown when occur some error
      */
-    public String invokeByGet(String serviceName, String suffix) throws InfrastructureException {
+    public String invokeByGet(String serviceName, String suffix) {
         Executor executor = createExecutor(serviceName);
 
         try {
@@ -70,7 +70,7 @@ public class WatsonClient {
      * @return a json
      * @throws InfrastructureException thrown when occur some error
      */
-    public String invokeByPost(String serviceName, String suffix, Map<String, String> parameters) throws InfrastructureException {
+    public String invokeByPost(String serviceName, String suffix, Map<String, String> parameters) {
         Executor executor = createExecutor(serviceName);
 
         try {
@@ -95,7 +95,7 @@ public class WatsonClient {
     }
 
     //responsible to create an instance of HttpClient Fluent Executor based on VCAP_SERVICES values
-    private Executor createExecutor(String serviceName) throws InfrastructureException {
+    private Executor createExecutor(String serviceName) {
         try {
 //            String vCapServices = System.getenv(VCAP_SERVICES);
             String vCapServices = "{\n" +

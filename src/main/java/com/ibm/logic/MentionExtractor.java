@@ -35,8 +35,9 @@ public class MentionExtractor {
      * @param startDate follows the pattern CCYY-MM-DD and is the initial date used on the query to retrieve the tweets
      * @param endData follows the pattern CCYY-MM-DD and is the end date used on the query to retrieve the tweets
      * @return a map where the key is the name of the mentioned person and the value is how many time he/she was found based on the tweets analyzed
+     * @throws Exception when some error occurs
      */
-    public Map<String, Long> find(String nickName, String startDate, String endData) {
+    public Map<String, Long> find(String nickName, String startDate, String endData) throws Exception {
 
         List<String> messages = twitterSearchService.search(nickName, startDate, endData);
 
@@ -48,5 +49,21 @@ public class MentionExtractor {
         return mentions
                 .stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    }
+
+    public TwitterSearchService getTwitterSearchService() {
+        return twitterSearchService;
+    }
+
+    public void setTwitterSearchService(TwitterSearchService twitterSearchService) {
+        this.twitterSearchService = twitterSearchService;
+    }
+
+    public RelationShipExtractionService getRelationShipExtractionService() {
+        return relationShipExtractionService;
+    }
+
+    public void setRelationShipExtractionService(RelationShipExtractionService relationShipExtractionService) {
+        this.relationShipExtractionService = relationShipExtractionService;
     }
 }
