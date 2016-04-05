@@ -14,7 +14,9 @@ The others parameters you have to inform are an initial date and an end date. Re
 Example of a valid request:
 
 Nickname: rafaeu
+
 Initial Date: 2016-02-01
+
 End Date: 2016-04-01
 
 Obs. There's no validation to parameters informed in a wrong way
