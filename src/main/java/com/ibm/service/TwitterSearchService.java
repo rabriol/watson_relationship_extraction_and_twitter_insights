@@ -25,11 +25,19 @@ public class TwitterSearchService {
     @Autowired
     private WatsonClient client;
 
+    /**
+     * Makes the call to twitterinsights service and extract all tweets found
+     *
+     * @param nickName the name of the interested user
+     * @param startDate follows the pattern CCYY-MM-DD and is the initial date used on the query to retrieve the tweets
+     * @param endDate follows the pattern CCYY-MM-DD and is the end date used on the query to retrieve the tweets
+     * @return a list contaning all tweets found based on the query parameters
+     */
     public List<String> search(String nickName, String startDate, String endDate) {
         try {
-            String url = buildUrl(nickName, startDate, endDate);
+            String uri = buildUri(nickName, startDate, endDate);
 
-            String json = client.invokeByGet(TWITTERINSIGHTS_SERVICE, url);
+            String json = client.invokeByGet(TWITTERINSIGHTS_SERVICE, uri);
 
             List<String> result = extractTweets(json);
 
@@ -45,10 +53,10 @@ public class TwitterSearchService {
         JSONObject root = (JSONObject) new JSONParser().parse(json);
         JSONArray tweets = (JSONArray) root.get("tweets");
 
-        Iterator<String> iterator = tweets.iterator();
+        Iterator<JSONObject> iterator = tweets.iterator();
 
         while(iterator.hasNext()) {
-            JSONObject node = (JSONObject) new JSONParser().parse(iterator.next());
+            JSONObject node = iterator.next();
             JSONObject message = (JSONObject)node.get("message");
             messages.add((String) message.get("body"));
         }
@@ -56,7 +64,7 @@ public class TwitterSearchService {
         return messages;
     }
 
-    private String buildUrl(String nickName, String startDate, String endDate) throws UnsupportedEncodingException {
+    private String buildUri(String nickName, String startDate, String endDate) throws UnsupportedEncodingException {
         String parameter = new StringBuilder()
                 .append("from:")
                 .append(nickName)
@@ -68,9 +76,10 @@ public class TwitterSearchService {
 
         String paramEncoded = URLEncoder.encode(parameter, "UTF-8");
 
+        //the parameter size is fixed in 100 just considering this is a experimental project
         String url = new StringBuilder()
                 .append(TWITTER_INSIGHTS_URI)
-                .append("?")
+                .append("?q=")
                 .append(paramEncoded)
                 .append("&size=100")
                 .toString();

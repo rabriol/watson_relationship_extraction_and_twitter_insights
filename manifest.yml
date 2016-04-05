@@ -1,5 +1,5 @@
 applications:
-- path: target/WhoYouAreTalkingAbout.war
+- path: target/who-you-are-talking-about.war
   memory: 512M
   instances: 1
   domain: mybluemix.net

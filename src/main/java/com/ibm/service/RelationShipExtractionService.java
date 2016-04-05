@@ -26,6 +26,9 @@ public class RelationShipExtractionService {
     public static final String SID = "sid";
     public static final String RT = "rt";
     public static final String TXT = "txt";
+    public static final String NAM = "NAM";
+    public static final String PERSON = "PERSON";
+    public static final double SCORE_QUALITY = 0.5;
 
     @Autowired
     private WatsonClient client;
@@ -54,24 +57,26 @@ public class RelationShipExtractionService {
 
         JSONObject root = (JSONObject) new JSONParser().parse(json);
         JSONObject doc = (JSONObject) root.get("doc");
-        JSONObject entities = (JSONObject) doc.get("entities");
-        JSONArray entity = (JSONArray) entities.get("entity");
+        JSONObject mentions = (JSONObject) doc.get("mentions");
+        JSONArray mention = (JSONArray) mentions.get("mention");
 
-        Iterator<String> iterator = entity.iterator();
+        if (mention == null) {
+            return new ArrayList<>();
+        }
 
-        while(iterator.hasNext()) {
-            JSONObject node = (JSONObject) new JSONParser().parse(iterator.next());
-            String level = (String)node.get("level");
-            String type = (String)node.get("type");
-            String score = (String)node.get("score");
+        Iterator<JSONObject> iterator = mention.iterator();
 
-            if ("NAM".equals(level) && "PERSON".equals(type) && Double.valueOf(score) >= 0.5) {
-                JSONObject mentref = (JSONObject)node.get("mentref");
-                people.add((String) mentref.get("text"));
+        while (iterator.hasNext()) {
+            JSONObject node = iterator.next();
+            String mtype = (String) node.get("mtype");
+            String role = (String) node.get("role");
+            Double score = (Double) node.get("score");
+
+            if (NAM.equals(mtype) && PERSON.equals(role) && score >= SCORE_QUALITY) {
+                people.add((String) node.get("text"));
             }
         }
 
         return people;
     }
-
 }
