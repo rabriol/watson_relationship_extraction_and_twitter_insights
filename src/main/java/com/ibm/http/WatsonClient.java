@@ -97,45 +97,8 @@ public class WatsonClient {
     //responsible to create an instance of HttpClient Fluent Executor based on VCAP_SERVICES values
     private Executor createExecutor(String serviceName) {
         try {
-//            String vCapServices = System.getenv(VCAP_SERVICES);
-            String vCapServices = "{\n" +
-                    "   \"relationship_extraction\": [\n" +
-                    "      {\n" +
-                    "         \"name\": \"relationship_extraction\",\n" +
-                    "         \"label\": \"relationship_extraction\",\n" +
-                    "         \"plan\": \"relationship_extraction_free_plan\",\n" +
-                    "         \"credentials\": {\n" +
-                    "            \"url\": \"https://gateway.watsonplatform.net/relationship-extraction-beta/api\",\n" +
-                    "            \"sids\": [\n" +
-                    "               {\n" +
-                    "                  \"sid\": \"ie-es-news\",\n" +
-                    "                  \"description\": \"information extraction from Spanish news\"\n" +
-                    "               },\n" +
-                    "               {\n" +
-                    "                  \"sid\": \"ie-en-news\",\n" +
-                    "                  \"description\": \"information extraction from English news\"\n" +
-                    "               }\n" +
-                    "            ],\n" +
-                    "            \"password\": \"H35M85wxHgtB\",\n" +
-                    "            \"username\": \"a19b6a76-f8fb-4cf8-b756-0f0916a262d1\"\n" +
-                    "         }\n" +
-                    "      }\n" +
-                    "   ],\n" +
-                    "   \"twitterinsights\": [\n" +
-                    "      {\n" +
-                    "         \"name\": \"insights_for_twitter\",\n" +
-                    "         \"label\": \"twitterinsights\",\n" +
-                    "         \"plan\": \"Free\",\n" +
-                    "         \"credentials\": {\n" +
-                    "            \"username\": \"238b96f8-3af8-4e0a-9996-401a2f7f167b\",\n" +
-                    "            \"password\": \"8VRzSO3W07\",\n" +
-                    "            \"host\": \"cdeservice.mybluemix.net\",\n" +
-                    "            \"port\": 443,\n" +
-                    "            \"url\": \"https://238b96f8-3af8-4e0a-9996-401a2f7f167b:8VRzSO3W07@cdeservice.mybluemix.net\"\n" +
-                    "         }\n" +
-                    "      }\n" +
-                    "   ]\n" +
-                    "}";
+            String vCapServices = System.getenv(VCAP_SERVICES);
+
             JSONObject vCap = (JSONObject) new JSONParser().parse(vCapServices);
 
             this.watson = (JSONArray) vCap.get(serviceName);
