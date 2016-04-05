@@ -34,7 +34,11 @@ public class WebController {
         try {
             Map<String, Long> result = mentionExtractor.find(nickName, startDate, endDate);
 
-            return result.toString();
+            if (!result.isEmpty()) {
+                model.addAttribute("persons", result);
+            }
+
+            return "result";
         } catch (Exception e) {
             return "";
         }

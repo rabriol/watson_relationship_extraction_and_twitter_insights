@@ -3,10 +3,51 @@
 <head>
     <title>Who you're talking about?</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous" />[
+    <style>
+        .name-box > div {
+            background: #B8D5DE;
+            border-left: 04px solid #117E9D;
+            font-family: Verdana, Arial;
+            font-size: 20px;
+            margin: 10px;
+            text-align:center;
+            padding:40px;
+            box-shadow: 3px 3px 2px #cccccc;
+        }
+
+        .name-box {
+            padding: auto;
+            text-align:center;
+            display:block;
+        }
+    </style>
 </head>
 <body>
-    <form action="/find" method="get">
-        <button type="submit" value="Submit">START</button>
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" style="text-align:center;"><h1>Who are you talking about?</h1></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row name-box" th:if="${persons} != null">
+                <div class="col-md-3" th:each="instance : ${persons}">
+                    <div th:text="${instance.key}"></div>
+                    <div th:text="${instance.value}"></div>
+                </div>
+            </div>
+
+            <div class="row" th:if="${persons} == null">
+                <div class="col-md-12" style="text-align:center">No results found!</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </body>
 </html>
